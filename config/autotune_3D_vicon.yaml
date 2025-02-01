@@ -1,0 +1,44 @@
+### Controller Settings:
+dir_num: 51                         #Number of e_vec candidates sampled in geodesic
+                                    #approximation. 
+
+ve: 0.8                             #0.0-1.0 how closely should the robot follow 
+                                    #on-Manifold tangent hyperplane vector computed.
+
+beta_coef: 1.0                      #Coef to compute step size (beta) input into geodesic 
+                                    #approximator.
+
+om_expand_threshold: 3.0            #when the robot distance is below the threshold, 
+                                    #it should select tangent hyperplane vector from 
+                                    #the boundary manifold (i.e h=0) instead of the 
+                                    #Manifold that the robot is currently on.
+
+target_range: 2.0                   #Deactive obstacle switcher inside the tangent  
+                                    #hyperplane computation when robot is within this
+                                    #distance to the target.
+
+om_range: 1.0                       #The detecting range of the robot's ideal onboard  
+                                    #sensors.
+
+hold_time: 1                        #For how many time steps, should the robot follow
+                                    #the newly computed tangent hyperplane vector
+
+base_margin: 0.0
+
+### geodesic approximation settings
+w: 0.05                              #parameter w in barrier function h_OH
+
+iter: 100                           #iterations that the geodesic approximator runs
+                                    #for concave environmental obstacles
+
+custom_iter1: NA                    #not used when iter is not NA
+
+custom_iter2: NA                    #not used when iter is not NA
+
+iter_g: 10                          #iterations the robot takes to convert its states 
+                                    #from the current manifold to the on boundary
+                                    #manifold (i.e. h = 0)
+
+iter_c: NA                          #iterations that the geodesic approximator runs
+                                    #for dynamic humans modeled as cylinders;
+                                    #not activated in current mcbf version
