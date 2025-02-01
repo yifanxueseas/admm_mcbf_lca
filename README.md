@@ -1,10 +1,10 @@
-Working code for MCBF-QP: A local-minimum-free reactive safe controller, combining the generalizability of regular Control Barrier Function Quadratic Programs (CBF-QPs) and the concave obstacle navigation ability of Modulation of Dynamical Systems (onM-Mod-DS) by Yifan Xue. Code Contributor: Yifan Xue, and Ze Zhang. 
+Working code for ADMM-MCBF-LCA: A Layered Control Architecture for Safe Real-Time Navigation by Anusha Srikantha and Yifan Xue. Code Contributor: Anusha Srikantha, Yifan Xue, and Ze Zhang. 
 
 ## Idea
-As prominent real-time safety-critical reactive control techniques, Control Barrier Function Quadratic Programs (CBF-QPs) work for control affine systems in general but result in local minima in the generated trajectories and consequently cannot ensure convergence to the goals. Contrarily, Modulation of Dynamical Systems (Mod-DSs), including normal, reference, and on-manifold Mod-DS, achieve obstacle avoidance with few and even no local minima but have trouble optimally minimizing the difference between the constrained and the unconstrained controller outputs, and its applications are limited to fully-actuated systems. We dive into the theoretical foundations of CBF-QP and Mod-DS, proving that despite their distinct origins, normal Mod-DS is a special case of CBF-QP, and reference Mod-DS's solutions are mathematically connected to that of the CBF-QP through one equation. Building on top of the unveiled theoretical connections between CBF-QP and Mod-DS, reference Mod-based CBF-QP and on-manifold Mod-based CBF-QP controllers are proposed to combine the strength of CBF-QP and Mod-DS approaches and realize local-minimum-free reactive obstacle avoidance for control affine systems in general. We validate our methods in both simulated hospital environments and real-world experiments using Ridgeback for fully-actuated systems and Fetch robots for underactuated systems. Mod-based CBF-QPs outperform CBF-QPs as well as the optimally constrained-enforcing Mod-DS approaches we proposed in all experiments. 
+ We consider the problem of safe real-time navigation of a robot in an unknown dynamic environment with moving obstacles and input saturation constraints. We assume that the robot detects nearby obstacle boundaries with a short-range sensor. This problem presents three main challenges: i) input constraints, ii) safety, and iii) real-time computation. To tackle all three challenges, we present a layered control architecture (LCA) consisting of an offline path library generation layer, and an online path selection and safety layer. To overcome the limitations of reactive methods, our offline path library consists of feasible controllers, feedback gains, and reference trajectories. To handle computational burden and safety, we solve online path selection and generate safe inputs that run at $100$ Hz. Through simulations on Gazebo and Fetch hardware in an unknown indoor environment, we evaluate our approach against baselines that are layered, end-to-end, or reactive. Our experiments demonstrate that among all algorithms, only our proposed LCA is able to complete tasks such as reaching a goal, safely. When comparing metrics such as safety, input error, and success rate, we show that our approach generates safe and feasible inputs throughout the robot execution.
  
 ### How to use
-The current version of MCBF-QP controllers are developed for robot navigation tasks and supports 2 robot models: differential drive (unicycle model) and omni-directional drive. Controller and environment settings can be updated in `env_controller.yaml` inside the `config` folder.
+The current version of ADMM_MCBF_LCA framework is setup for robot navigation tasks using differential drive (unicycle model). Robot and environment settings can be updated in `env_controller.yaml` inside the `config` folder. Offline multi-path settings can be altered in `path_generator.py`.
 
 Test GPDF-based distance field generator.
 ```
@@ -12,15 +12,9 @@ cd src/
 python3.8 test_gpdf_image.py 
 ```
 
-Run the real-time visualization and debugger for MCBF-QP controllers.
+Run the real-time visualization and debugger for ADMM_MCBF_LCA.
 ```
 cd src/
-python3.8 ctrl_omcbf_debugger.py 
-```
-
-Generate gifs to record the testing results of multiple robots in a single environment using MCBF-QP controllers.
-```
-cd src/
-python3.8 test_ctrl_omcbf_gif.py
+python3.8 test_admm_lca.py 
 ```
 
