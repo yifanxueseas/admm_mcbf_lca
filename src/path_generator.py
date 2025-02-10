@@ -4,15 +4,16 @@ from admm.admm_lca import admm_lca, run_parallel_admm
 from admm.model_defn import *
 from trajax.integrators import rk4
 import matplotlib.pyplot as plt
+from admm.generate_samples import generate_semicircles
 
-path_type = 'a'							#'b' for backwards trajectory, 'f' for forward trajectories, 'a' for both
+path_type = 'g'							#'b' for backwards trajectory, 'f' for forward trajectories, 'a' for both
 DT_GLOBAL = 0.5							#discrete timestep used by the discrete-time global path planner
 HORIZON_B = 72							#horizon of the backwards trajectories
 HORIZON_F = 40							#horizon of the forward trajectories
 u_max = np.array([1,1])					#input minimums of the robot enforced by the global path planner
 u_min = np.array([0,-1])				#input maximums of the robot enforced by the global path planner
 SAMPLE_NUM_B = 4						#the number of trajectories that spans regions on the back of the robot
-SAMPLE_NUM_F = 15						#the number of trajectories that spans regions on the back of the robot
+SAMPLE_NUM_F = 8						#the number of trajectories that spans regions on the back of the robot
 
 # Define variables for the problem specification
 dynamics = rk4(unicycle, dt=DT_GLOBAL)	#robot dynamics input to the global path planner
@@ -32,36 +33,36 @@ MID_ALIGN_X = -13.0
 END_ALIGN_X = -7.0
 Y_RANGE_MAX = 5.6
 Y_RANGE_MIN = -5.6
-wayp_num_b = 9
-pb_l_list = np.zeros((SAMPLE_NUM_B, wayp_num_b,2))
-pb_l_list[0] = np.array([[-14.0, 0.5],[-14.0, 1.5],[-14.0, 3.0],[-14.0, 4.5],[-14.0, 5.2],[MID_ALIGN_X,Y_RANGE_MAX],[-10.0,Y_RANGE_MAX],[END_ALIGN_X,Y_RANGE_MAX],[-6.0,2*Y_RANGE_MAX/3]])
-pb_l_list[1] = np.array([[-14.5, 0.5],[-15.0, 1.5],[-15.0, 3.0],[-15.0, 4.5],[-14.5, 5.2],[MID_ALIGN_X,Y_RANGE_MAX],[-10.0,Y_RANGE_MAX],[END_ALIGN_X,Y_RANGE_MAX],[-6.0,2*Y_RANGE_MAX/3]])
-pb_l_list[2] = np.array([[-15.0, 0.5],[-16.0, 1.5],[-16.0, 3.0],[-16.0, 4.5],[-15.0, 5.2],[MID_ALIGN_X,Y_RANGE_MAX],[-10.0,Y_RANGE_MAX],[END_ALIGN_X,Y_RANGE_MAX],[-6.0,2*Y_RANGE_MAX/3]])
-pb_l_list[3] = np.array([[-15.5, 0.5],[-17.0, 1.5],[-17.0, 3.0],[-17.0, 4.5],[-16.0, 5.2],[MID_ALIGN_X,Y_RANGE_MAX],[-10.0,Y_RANGE_MAX],[END_ALIGN_X,Y_RANGE_MAX],[-6.0,2*Y_RANGE_MAX/3]])
+# wayp_num_b = 9
+# pb_l_list = np.zeros((SAMPLE_NUM_B, wayp_num_b,2))
+# pb_l_list[0] = np.array([[-14.0, 0.5],[-14.0, 1.5],[-14.0, 3.0],[-14.0, 4.5],[-14.0, 5.2],[MID_ALIGN_X,Y_RANGE_MAX],[-10.0,Y_RANGE_MAX],[END_ALIGN_X,Y_RANGE_MAX],[-6.0,2*Y_RANGE_MAX/3]])
+# pb_l_list[1] = np.array([[-14.5, 0.5],[-15.0, 1.5],[-15.0, 3.0],[-15.0, 4.5],[-14.5, 5.2],[MID_ALIGN_X,Y_RANGE_MAX],[-10.0,Y_RANGE_MAX],[END_ALIGN_X,Y_RANGE_MAX],[-6.0,2*Y_RANGE_MAX/3]])
+# pb_l_list[2] = np.array([[-15.0, 0.5],[-16.0, 1.5],[-16.0, 3.0],[-16.0, 4.5],[-15.0, 5.2],[MID_ALIGN_X,Y_RANGE_MAX],[-10.0,Y_RANGE_MAX],[END_ALIGN_X,Y_RANGE_MAX],[-6.0,2*Y_RANGE_MAX/3]])
+# pb_l_list[3] = np.array([[-15.5, 0.5],[-17.0, 1.5],[-17.0, 3.0],[-17.0, 4.5],[-16.0, 5.2],[MID_ALIGN_X,Y_RANGE_MAX],[-10.0,Y_RANGE_MAX],[END_ALIGN_X,Y_RANGE_MAX],[-6.0,2*Y_RANGE_MAX/3]])
 
-pb_r_list = np.zeros((SAMPLE_NUM_B, wayp_num_b,2))
-pb_r_list[0] = np.array([[-15.5,-0.5],[-17.0,-1.5],[-17.0,-3.0],[-17.0,-4.5],[-16.0,-5.2],[MID_ALIGN_X,Y_RANGE_MIN],[-10.0,Y_RANGE_MIN],[END_ALIGN_X,Y_RANGE_MIN],[-6.0,2*Y_RANGE_MIN/3]])
-pb_r_list[1] = np.array([[-15.0,-0.5],[-16.0,-1.5],[-16.0,-3.0],[-16.0,-4.5],[-15.0,-5.2],[MID_ALIGN_X,Y_RANGE_MIN],[-10.0,Y_RANGE_MIN],[END_ALIGN_X,Y_RANGE_MIN],[-6.0,2*Y_RANGE_MIN/3]])
-pb_r_list[2] = np.array([[-14.5,-0.5],[-15.0,-1.5],[-15.0,-3.0],[-15.0,-4.5],[-14.5,-5.2],[MID_ALIGN_X,Y_RANGE_MIN],[-10.0,Y_RANGE_MIN],[END_ALIGN_X,Y_RANGE_MIN],[-6.0,2*Y_RANGE_MIN/3]])
-pb_r_list[3] = np.array([[-14.0,-0.5],[-14.0,-1.5],[-14.0,-3.0],[-14.0,-4.5],[-14.0,-5.2],[MID_ALIGN_X,Y_RANGE_MIN],[-10.0,Y_RANGE_MIN],[END_ALIGN_X,Y_RANGE_MIN],[-6.0,2*Y_RANGE_MIN/3]])
+# pb_r_list = np.zeros((SAMPLE_NUM_B, wayp_num_b,2))
+# pb_r_list[0] = np.array([[-15.5,-0.5],[-17.0,-1.5],[-17.0,-3.0],[-17.0,-4.5],[-16.0,-5.2],[MID_ALIGN_X,Y_RANGE_MIN],[-10.0,Y_RANGE_MIN],[END_ALIGN_X,Y_RANGE_MIN],[-6.0,2*Y_RANGE_MIN/3]])
+# pb_r_list[1] = np.array([[-15.0,-0.5],[-16.0,-1.5],[-16.0,-3.0],[-16.0,-4.5],[-15.0,-5.2],[MID_ALIGN_X,Y_RANGE_MIN],[-10.0,Y_RANGE_MIN],[END_ALIGN_X,Y_RANGE_MIN],[-6.0,2*Y_RANGE_MIN/3]])
+# pb_r_list[2] = np.array([[-14.5,-0.5],[-15.0,-1.5],[-15.0,-3.0],[-15.0,-4.5],[-14.5,-5.2],[MID_ALIGN_X,Y_RANGE_MIN],[-10.0,Y_RANGE_MIN],[END_ALIGN_X,Y_RANGE_MIN],[-6.0,2*Y_RANGE_MIN/3]])
+# pb_r_list[3] = np.array([[-14.0,-0.5],[-14.0,-1.5],[-14.0,-3.0],[-14.0,-4.5],[-14.0,-5.2],[MID_ALIGN_X,Y_RANGE_MIN],[-10.0,Y_RANGE_MIN],[END_ALIGN_X,Y_RANGE_MIN],[-6.0,2*Y_RANGE_MIN/3]])
 
-wayp_num_f = 5
-pf_list = np.zeros((SAMPLE_NUM_F,wayp_num_f,2))
-pf_list[0] = np.array([[-13.5,-2.8],[MID_ALIGN_X,Y_RANGE_MIN],[-10.0,Y_RANGE_MIN],[END_ALIGN_X,Y_RANGE_MIN],[-6.0,2*Y_RANGE_MIN/3]])
-pf_list[1] = np.array([[-13.5,-2.4],[MID_ALIGN_X,-4.8],[-10.0,-4.8],[END_ALIGN_X,-4.8],[-6.0,-3.2]])
-pf_list[2] = np.array([[-13.5,-2.0],[MID_ALIGN_X,-4.0],[-10.0,-4.0],[END_ALIGN_X,-4.0],[-6.0,-2.6]])
-pf_list[3] = np.array([[-13.5,-1.6],[MID_ALIGN_X,-3.2],[-10.0,-3.2],[END_ALIGN_X,-3.2],[-6.0,-2.1]])
-pf_list[4] = np.array([[-13.5,-1.2],[MID_ALIGN_X,-2.4],[-10.0,-2.4],[END_ALIGN_X,-2.4],[-6.0,-1.6]])
-pf_list[5] = np.array([[-13.5,-0.8],[MID_ALIGN_X,-1.6],[-10.0,-1.6],[END_ALIGN_X,-1.6],[-6.0,-1.1]])
-pf_list[6] = np.array([[-13.5,-0.4],[MID_ALIGN_X,-0.8],[-10.0,-0.8],[END_ALIGN_X,-0.8],[-6.0,-0.6]])
-pf_list[7] = np.array([[-13.5, 0.0],[MID_ALIGN_X, 0.0],[-10.0, 0.0],[END_ALIGN_X, 0.0],[-6.0, 0.0]])
-pf_list[8] = np.array([[-13.5, 0.4],[MID_ALIGN_X, 0.8],[-10.0, 0.8],[END_ALIGN_X, 0.8],[-6.0, 0.6]])
-pf_list[9] = np.array([[-13.5, 0.8],[MID_ALIGN_X, 1.6],[-10.0, 1.6],[END_ALIGN_X, 1.6],[-6.0, 1.1]])
-pf_list[10] = np.array([[-13.5,1.2],[MID_ALIGN_X, 2.4],[-10.0, 2.4],[END_ALIGN_X, 2.4],[-6.0, 1.6]])
-pf_list[11] = np.array([[-13.5,1.6],[MID_ALIGN_X, 3.2],[-10.0, 3.2],[END_ALIGN_X, 3.2],[-6.0, 2.1]])
-pf_list[12] = np.array([[-13.5,2.0],[MID_ALIGN_X, 4.0],[-10.0, 4.0],[END_ALIGN_X, 4.0],[-6.0, 2.6]])
-pf_list[13] = np.array([[-13.5,2.4],[MID_ALIGN_X, 4.8],[-10.0, 4.8],[END_ALIGN_X, 4.8],[-6.0, 3.2]])
-pf_list[14] = np.array([[-13.5,2.8],[MID_ALIGN_X,Y_RANGE_MAX],[-10.0,Y_RANGE_MAX],[END_ALIGN_X,Y_RANGE_MAX],[-6.0,2*Y_RANGE_MAX/3]])
+# wayp_num_f = 5
+# pf_list = np.zeros((SAMPLE_NUM_F,wayp_num_f,2))
+# pf_list[0] = np.array([[-13.5,-2.8],[MID_ALIGN_X,Y_RANGE_MIN],[-10.0,Y_RANGE_MIN],[END_ALIGN_X,Y_RANGE_MIN],[-6.0,2*Y_RANGE_MIN/3]])
+# pf_list[1] = np.array([[-13.5,-2.4],[MID_ALIGN_X,-4.8],[-10.0,-4.8],[END_ALIGN_X,-4.8],[-6.0,-3.2]])
+# pf_list[2] = np.array([[-13.5,-2.0],[MID_ALIGN_X,-4.0],[-10.0,-4.0],[END_ALIGN_X,-4.0],[-6.0,-2.6]])
+# pf_list[3] = np.array([[-13.5,-1.6],[MID_ALIGN_X,-3.2],[-10.0,-3.2],[END_ALIGN_X,-3.2],[-6.0,-2.1]])
+# pf_list[4] = np.array([[-13.5,-1.2],[MID_ALIGN_X,-2.4],[-10.0,-2.4],[END_ALIGN_X,-2.4],[-6.0,-1.6]])
+# pf_list[5] = np.array([[-13.5,-0.8],[MID_ALIGN_X,-1.6],[-10.0,-1.6],[END_ALIGN_X,-1.6],[-6.0,-1.1]])
+# pf_list[6] = np.array([[-13.5,-0.4],[MID_ALIGN_X,-0.8],[-10.0,-0.8],[END_ALIGN_X,-0.8],[-6.0,-0.6]])
+# pf_list[7] = np.array([[-13.5, 0.0],[MID_ALIGN_X, 0.0],[-10.0, 0.0],[END_ALIGN_X, 0.0],[-6.0, 0.0]])
+# pf_list[8] = np.array([[-13.5, 0.4],[MID_ALIGN_X, 0.8],[-10.0, 0.8],[END_ALIGN_X, 0.8],[-6.0, 0.6]])
+# pf_list[9] = np.array([[-13.5, 0.8],[MID_ALIGN_X, 1.6],[-10.0, 1.6],[END_ALIGN_X, 1.6],[-6.0, 1.1]])
+# pf_list[10] = np.array([[-13.5,1.2],[MID_ALIGN_X, 2.4],[-10.0, 2.4],[END_ALIGN_X, 2.4],[-6.0, 1.6]])
+# pf_list[11] = np.array([[-13.5,1.6],[MID_ALIGN_X, 3.2],[-10.0, 3.2],[END_ALIGN_X, 3.2],[-6.0, 2.1]])
+# pf_list[12] = np.array([[-13.5,2.0],[MID_ALIGN_X, 4.0],[-10.0, 4.0],[END_ALIGN_X, 4.0],[-6.0, 2.6]])
+# pf_list[13] = np.array([[-13.5,2.4],[MID_ALIGN_X, 4.8],[-10.0, 4.8],[END_ALIGN_X, 4.8],[-6.0, 3.2]])
+# pf_list[14] = np.array([[-13.5,2.8],[MID_ALIGN_X,Y_RANGE_MAX],[-10.0,Y_RANGE_MAX],[END_ALIGN_X,Y_RANGE_MAX],[-6.0,2*Y_RANGE_MAX/3]])
 
 
 #problem initialization 
@@ -88,6 +89,21 @@ elif path_type == 'f':
 	p_list.append(pf_list)
 	horizon.append(HORIZON_F)
 	sample_num.append(SAMPLE_NUM_F)
+elif path_type == 'g':
+	samples = generate_semicircles(12, np.array(X_INI[0:2]), GOAL)
+	repeat_num = 3
+	pb_l_list = samples[:4, :7, :]
+	pb_r_list = samples[4:, :7, :]
+	pf_list = samples[:, 7:, :]
+	p_list.append(pb_l_list)
+	p_list.append(pb_r_list)
+	p_list.append(pf_list)
+	horizon.append(HORIZON_B)
+	horizon.append(HORIZON_B)
+	horizon.append(HORIZON_F)
+	sample_num.append(SAMPLE_NUM_B)
+	sample_num.append(SAMPLE_NUM_B)
+	sample_num.append(SAMPLE_NUM_F)
 else:
 	repeat_num = 3
 	p_list.append(pb_l_list)
@@ -108,7 +124,7 @@ def load_admm():
 	A_set = []
 	B_set = []
 	for i in range(repeat_num):
-		df = pd.read_csv("../data/offline_admm"+path_type+str(i)+"_hospital.csv")
+		df = pd.read_csv("/home/anusha/PycharmProjects/LCA-ADMM/admm_mcbf_lca/data/offline_admm"+path_type+str(i)+"_hospital.csv")
 		for k in range(sample_num[i]):
 			x = np.repeat(np.array(X_INI).reshape(1,n), repeats=max(horizon), axis=0)
 			u = np.zeros((max(horizon),m))
@@ -146,8 +162,8 @@ def load_admm():
 
 def generate_path():
 	for j in range(repeat_num):
+		print("Generating path for ", j)
 		df = pd.DataFrame()
-
 		admm_obj = admm_lca(dynamics, horizon[j], DT_GLOBAL, m, n, np.array(X_INI), u0, GOAL, rho, idx=(0, 1), umax=u_max, umin=u_min)
 		nominal_ctrl = run_parallel_admm(admm_obj, dyn="1st",points=p_list[j],use_points=True,horizon=horizon[j])
 		# nominal_ctrl = run_parallel_admm(admm_obj, num_samples=sample_num,dispersion_size = 0.78,dyn="1st",num_wayp=5)
@@ -167,7 +183,7 @@ def generate_path():
 				for l2 in range(n):
 					df['gain'+str(k)+str(l1)+str(l2)]=pd.Series(gain_K[:,l1,l2])
 
-		df.to_csv("../data/offline_admm"+path_type+str(j)+"_hospital.csv")
+		df.to_csv("/home/anusha/PycharmProjects/LCA-ADMM/admm_mcbf_lca/data/offline_admm"+path_type+str(j)+"_hospital.csv")
 
 
 if __name__ == '__main__':
