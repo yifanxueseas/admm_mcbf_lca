@@ -1,20 +1,51 @@
-Code for ADMM-MCBF-LCA: A Layered Control Architecture for Safe Real-Time Navigation by Anusha Srikantha and Yifan Xue. Code Contributor: Anusha Srikantha, Yifan Xue, and Ze Zhang. 
+# ADMM-MCBF-LCA: A Layered Control Architecture for Safe Real-Time Navigation  
 
-## Idea
- We consider the problem of safe real-time navigation of a robot in an unknown dynamic environment with moving obstacles and input saturation constraints. We assume that the robot detects nearby obstacle boundaries with a short-range sensor. This problem presents three main challenges: i) input constraints, ii) safety, and iii) real-time computation. To tackle all three challenges, we present a layered control architecture (LCA) consisting of an offline path library generation layer, and an online path selection and safety layer. To overcome the limitations of reactive methods, our offline path library consists of feasible controllers, feedback gains, and reference trajectories. To handle computational burden and safety, we solve online path selection and generate safe inputs that run at $100$ Hz. Through simulations on Gazebo and Fetch hardware in an unknown indoor environment, we evaluate our approach against baselines that are layered, end-to-end, or reactive. Our experiments demonstrate that among all algorithms, only our proposed LCA is able to complete tasks such as reaching a goal, safely. When comparing metrics such as safety, input error, and success rate, we show that our approach generates safe and feasible inputs throughout the robot execution.
- 
-### How to use
-The current version of ADMM_MCBF_LCA framework is setup for robot navigation tasks using differential drive (unicycle model). Robot and environment settings can be updated in `env_controller.yaml` inside the `config` folder. Offline multi-path settings can be altered in `path_generator.py`.
+## Overview  
+This repository contains the implementation of **ADMM-MCBF-LCA**, a **Layered Control Architecture (LCA)** for real-time robot navigation in dynamic environments with arbitrary but smooth geometries. The approach was developed for the paper:  
 
-Test GPDF-based distance field generator.
-```
+**"ADMM-MCBF-LCA: A Layered Control Architecture for Safe Real-Time Navigation"**  
+**Authors:** Anusha Srikanthan, Yifan Xue  
+**Code Contributors:** Anusha Srikanthan, Yifan Xue, Ze Zhang  
+
+## Idea  
+We address the problem of **safe real-time navigation** for a robot operating in an **dynamic environment** with **moving obstacles** and **input saturation constraints**. The robot relies on short-range sensor data to detect nearby obstacle boundaries and also has access to obstacle motion.  
+
+### **Key Challenges:**  
+1. **Input Constraints** – Ensuring the robot respects actuator limitations.  
+2. **Safety** – Guaranteeing collision avoidance while navigating.  
+3. **Real-Time Computation** – Running at high frequencies (100 Hz) to maintain responsiveness.  
+
+### **Proposed Solution:**  
+To tackle these challenges, we introduce a **Layered Control Architecture (LCA)** consisting of:  
+- **Offline Path Library Generation Layer** – Precomputes feasible controllers, feedback gains, and reference trajectories to avoid reactive method limitations.  
+- **Online Path Selection & Safety Layer** – Selects an optimal path in real-time while enforcing safety constraints and maintaining computational efficiency.  
+
+### **Key Results:**  
+- Runs at **100 Hz**, ensuring real-time safety.  
+- Outperforms **layered, end-to-end, and reactive** baselines in **safety, input feasibility, and task success rate**.  
+- Successfully tested in **Gazebo simulations** and on **Fetch hardware** in an unknown indoor environment.  
+
+## Installation & Dependencies  
+This repository is implemented in Python 3.8 and requires the following dependencies:  
+
+- Python 3.8  
+- NumPy  
+- SciPy  
+- Matplotlib  
+- ROS (for robot simulations in Gazebo)  
+
+## How to Use  
+
+The **ADMM-MCBF-LCA** framework is currently set up for **robot navigation tasks** using a **differential drive (unicycle model)**.  
+
+### **Configuration:**  
+- Update **robot and environment settings** in `config/env_controller.yaml`.  
+- Modify **offline multi-path settings** in `path_generator.py`.  
+
+### **Run Tests & Visualizations:**  
+
+#### **1. Test the GPDF-based distance field generator**  
+```bash
 cd src/
 python3.8 test_gpdf_image.py 
-```
-
-Run the real-time visualization and debugger for ADMM_MCBF_LCA.
-```
-cd src/
-python3.8 test_admm_lca.py 
-```
 
