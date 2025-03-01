@@ -45,7 +45,18 @@ The **ADMM-MCBF-LCA** framework is currently set up for **robot navigation tasks
 ### **Run Tests & Visualizations:**  
 
 #### **1. Test the GPDF-based distance field generator**  
-```bash
-cd src/
-python3.8 test_gpdf_image.py 
+`cd src/`
+`python3.8 test_gpdf_image.py`
 
+#### **2. Run real-time visualization and debugger for ADMM-LCA**  
+`cd src/`
+`python3.8 test_admm_lca.py`
+
+## Citation
+If you find our work useful, please cite our paper:
+@article{Srikantha2024ADMMMCBF,
+  author    = {Anusha Srikantha and Yifan Xue},
+  title     = {ADMM-MCBF-LCA: A Layered Control Architecture for Safe Real-Time Navigation},
+  journal   = {To be updated},
+  year      = {2024}
+}
