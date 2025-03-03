@@ -5,7 +5,8 @@ from admm.model_defn import *
 from trajax.integrators import rk4
 import matplotlib.pyplot as plt
 
-path_type = 'a'							#'b' for backwards trajectory, 'f' for forward trajectories, 'a' for both
+
+path_type = 'f'							#'b' for backwards trajectory, 'f' for forward trajectories, 'a' for both
 DT_GLOBAL = 0.5							#discrete timestep used by the discrete-time global path planner
 HORIZON_B = 72							#horizon of the backwards trajectories
 HORIZON_F = 40							#horizon of the forward trajectories
@@ -150,9 +151,9 @@ def generate_path():
 
 		admm_obj = admm_lca(dynamics, horizon[j], DT_GLOBAL, m, n, np.array(X_INI), u0, GOAL, rho, idx=(0, 1), umax=u_max, umin=u_min)
 		nominal_ctrl = run_parallel_admm(admm_obj, dyn="1st",points=p_list[j],use_points=True,horizon=horizon[j])
-		# nominal_ctrl = run_parallel_admm(admm_obj, num_samples=sample_num,dispersion_size = 0.78,dyn="1st",num_wayp=5)
+
 		for k in range(sample_num[j]):
-			gain_K, gain_k, x, u, r, A, B = nominal_ctrl[k]
+			gain_K, gain_k, x, u, r, A, B, runtime = nominal_ctrl[k]
 
 			for l in range(n):
 				df['x'+str(k)+str(l)]=pd.Series(x[:,l])
@@ -171,7 +172,7 @@ def generate_path():
 
 
 if __name__ == '__main__':
-	# generate_path()
+	generate_path()
 	x_cur_set, u_cur_set, gain_K_set, A_set, B_set = load_admm()
 	repeat = 0
 	for i in range(len(x_cur_set)):

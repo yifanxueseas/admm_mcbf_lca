@@ -28,11 +28,15 @@ To tackle these challenges, we introduce a **Layered Control Architecture (LCA)*
 ## Installation & Dependencies  
 This repository is implemented in Python 3.8 and requires the following dependencies:  
 
-- Python 3.8  
-- NumPy  
-- SciPy  
-- Matplotlib  
-- ROS (for robot simulations in Gazebo)  
+- python        3.8.10  
+- numpy         1.22.4
+- scipy         1.7.1
+- matplotlib    3.7.5
+- jax           0.4.13
+- cvxpy         1.3.2
+- opencv-python 3.4.8
+- shapely       1.7.1
+- pandas        1.4.3
 
 ## How to Use  
 

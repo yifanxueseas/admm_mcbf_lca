@@ -2,20 +2,11 @@
 import numpy as np
 import time
 import sys
-import rospy
-from gazebo_msgs.msg import ModelState
-from geometry_msgs.msg import Twist
-from geometry_msgs.msg import Pose
 from scipy.spatial.transform import Rotation as R
 
 obs_num = 5
-# steps = 200
-# dt = 0.4 #regular
 dt = 0.05 #dubin
-# model_name = "star_shaped_"
-# model_name = "obs"
 model_name = "actor"
-#1.3 or 0
 default_z = 0.05
 
 obs_position_list = np.zeros((obs_num,20,3))

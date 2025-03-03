@@ -21,18 +21,19 @@ dynamics = rk4(unicycle, dt=DT_GLOBAL)	#robot dynamics input to the global path 
 X_INI_POS = [-1.6, 0.]					#robot initial states
 X_INI_LIST = []
 GOAL = np.array([2.0, 0.0])				#goal location in (x,y)
-for i in range(x_ini_num):
-	theta = i*2*np.pi/x_ini_num
-	Rot = np.array([[np.cos(theta), -np.sin(theta)],[np.sin(theta), np.cos(theta)]])
-	NEW_POS = GOAL + Rot@(X_INI_POS-GOAL)
-	X_INI_LIST.append([NEW_POS[0], NEW_POS[1], i*2*np.pi/x_ini_num])
+
 u0 = np.zeros(2)						#robot input initialization
 rho = 50
 m = 2									#robot input dimension
 n = 3									#robot state dimension
 runtime_list = []
 
-print(X_INI_LIST)
+for i in range(x_ini_num):
+	theta = i*2*np.pi/x_ini_num
+	Rot = np.array([[np.cos(theta), -np.sin(theta)],[np.sin(theta), np.cos(theta)]])
+	NEW_POS = GOAL + Rot@(X_INI_POS-GOAL)
+	X_INI_LIST.append([NEW_POS[0], NEW_POS[1], i*2*np.pi/x_ini_num])
+print("intial robot states",X_INI_LIST)
 
 def load_admm():
 	gain_K_set = []
@@ -82,8 +83,6 @@ def generate_path():
 	
 	for j in range(len(X_INI_LIST)):
 		admm_obj = admm_lca(dynamics, horizon, DT_GLOBAL, m, n, np.array(X_INI_LIST[j]), u0, GOAL, rho, idx=(0, 1), umax=u_max, umin=u_min)
-		# nominal_ctrl = run_parallel_admm(admm_obj, dyn="1st",points=p_list[j],use_points=True,horizon=horizon[j])
-		# breakpoint()
 		nominal_ctrl = run_parallel_admm(admm_obj, num_samples=sample_num,dispersion_size = 0.78,dyn="1st",num_wayp=5, horizon=horizon)
 		for k in range(sample_num):
 			gain_K, gain_k, x, u, r, A, B, runtime = nominal_ctrl[k]
@@ -109,9 +108,6 @@ if __name__ == '__main__':
 	generate_path()
 	x_cur_set, u_cur_set, gain_K_set, A_set, B_set = load_admm()
 	repeat = 0
-	print(len(x_cur_set))
-	print(runtime_list)
-	print(len(runtime_list))
 	print("runtime avg", np.mean(runtime_list))
 	for i in range(len(x_cur_set)):
 		plt.plot(x_cur_set[i,:,0], x_cur_set[i,:,1])
