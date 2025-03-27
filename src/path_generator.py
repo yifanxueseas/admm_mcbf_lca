@@ -6,7 +6,7 @@ from trajax.integrators import rk4
 import matplotlib.pyplot as plt
 
 
-path_type = 'f'							#'b' for backwards trajectory, 'f' for forward trajectories, 'a' for both
+path_type = 'a'							#'b' for backwards trajectory, 'f' for forward trajectories, 'a' for both
 DT_GLOBAL = 0.5							#discrete timestep used by the discrete-time global path planner
 HORIZON_B = 72							#horizon of the backwards trajectories
 HORIZON_F = 40							#horizon of the forward trajectories
