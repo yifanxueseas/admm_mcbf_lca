@@ -62,4 +62,5 @@ python3.8 test_admm_lca.py
 
 ## Citation
 If you find our work useful, please cite our paper:
+
 Srikanthan, A., Xue, Y., Kumar, V., Matni, N., & Figueroa, N. (2025). ADMM-MCBF-LCA: A Layered Control Architecture for Safe Real-Time Navigation. arXiv preprint arXiv:2503.02208.
