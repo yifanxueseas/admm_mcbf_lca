@@ -64,3 +64,7 @@ python3.8 test_admm_lca.py
 If you find our work useful, please cite our paper:
 
 Srikanthan, A., Xue, Y., Kumar, V., Matni, N., & Figueroa, N. (2025). ADMM-MCBF-LCA: A Layered Control Architecture for Safe Real-Time Navigation. arXiv preprint arXiv:2503.02208.
+
+Y. Xue and N. Figueroa, “No minima, no collisions: Combining modulation and control barrier function strategies for feasible dynamical collision avoidance,” 2025. Available: https://arxiv.org/abs/2502.14238
+
+A. Srikanthan, V. Kumar, and N. Matni, “Augmented lagrangian methods as layered control architectures,” arXiv preprint arXiv:2311.06404, 2023.
